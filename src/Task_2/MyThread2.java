@@ -13,7 +13,7 @@ public class MyThread2 extends Thread {
 
     void check (int i){
         try {
-            Thread.sleep(5);
+            Thread.sleep(15);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -27,11 +27,6 @@ public class MyThread2 extends Thread {
                 continue;
             }
             c.check(i);
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             b.set(true);
         }
     }

@@ -1,47 +1,31 @@
 package Task_2;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Task_2 {
+    static volatile List<Object> lo = new CopyOnWriteArrayList<>();
     public void multiThread() throws InterruptedException {
-        MyThread2 A = new MyThread2((n)->{fizz(n);});
-        MyThread2 B = new MyThread2((n)->{buzz(n);});
-        MyThread2 C = new MyThread2((n)->{fizzbuzz(n);});
-        MyThread2 D = new MyThread2((n)->{number(n);});
+        MyThread2 A = new MyThread2((n) -> lo.set(n, "fizz" /*+ Thread.currentThread().getName()*/));
+        MyThread2 B = new MyThread2((n) -> lo.set(n, "buzz" /*+ Thread.currentThread().getName()*/));
+        MyThread2 C = new MyThread2((n) -> lo.set(n, "fizzbuzz" /*+ Thread.currentThread().getName()*/));
+        A.start();
+        B.start();
+        C.start();
 
-        List <MyThread2> threadList = List.of(A,B,C,D);
+        for (int u = 1; u < 55; u++) {lo.add(u);}
 
-        for (MyThread2 th:threadList) {
-            Thread.sleep(50);
-            th.start();
-        }
-        for (int j = 1; j < 55; j++) {
-            for (MyThread2 th:threadList) {
-                th.check(j);
+        for (int j = 0; j < lo.size(); j++) {
+            if ((int) lo.get(j) % 5 == 0 && (int) lo.get(j) % 3 == 0) {
+                C.check(j);
+            } else if ((int) lo.get(j) % 3 == 0) {
+                A.check(j);
+            } else if ((int) lo.get(j) % 5 == 0) {
+                B.check(j);
             }
         }
-    }
-    static void fizz(int i){
-        if (i%3==0){
-            System.out.println("fizz");
-        }
-    }
-
-    static void buzz(int i){
-        if (i%5==0){
-            System.out.println("buzz");
-        }
-    }
-
-    static void fizzbuzz(int i){
-        if (i%15==0){
-            System.out.println("fizzbuzz");
-        }
-    }
-
-    static void number(int i){
-        if (i%3!=0&&i%5!=0){
-            System.out.println(i);
-        }
+        Thread D = new MyNewThread(lo);
+        Thread.sleep(50);
+        D.start();
     }
 }

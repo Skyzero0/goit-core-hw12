@@ -15,8 +15,8 @@ public class Main {
 ////        якщо число ділиться на 3 - вивести fizz
 ////        якщо число ділиться на 5 - вивести buzz
 ////        якщо число ділиться на 3 і на 5 одночасно - вивести fizzbuzz
-//        Task_2 t2 = new Task_2();
-//        t2.multiThread();
+        Task_2 t2 = new Task_2();
+        t2.multiThread();
 //        System.out.println("Hello world!");
     }
 }
